@@ -1,0 +1,6 @@
+spring:
+  data:
+    neo4j:
+      uri: blot
+      username: neo4j
+      password: abcd@1234
