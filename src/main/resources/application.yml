@@ -1,5 +1,12 @@
 server:
   port: 8899
+
+mybatis:
+  mapper-locations:
+    - mapper/*
+  type-aliases-package: com.bi.dbpedia.model
+  config-location: classpath:mybatis-config.xml
+
 spring:
   kafka:
     bootstrap-servers: hailuo.aliyun.com:9092
@@ -12,11 +19,6 @@ spring:
       enable-auto-commit: true
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-#  data:
-#    neo4j:
-#      uri: blot://192.168.3.14:7687
-#      username: neo4j
-#      password: abcd@1234
   datasource:
     druid:
       url: jdbc:mysql://cdb-ezjh4cma.bj.tencentcdb.com:10210/Test?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
@@ -35,3 +37,8 @@ spring:
       test-while-idle: true
       test-on-borrow: false
       test-on-return: false
+  data:
+    neo4j:
+      uri: bolt://192.168.3.14:7687
+      username: neo4j
+      password: abcd1234
