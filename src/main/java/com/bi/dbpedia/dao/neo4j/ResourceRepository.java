@@ -1,4 +1,4 @@
-package com.bi.dbpedia.dao;
+package com.bi.dbpedia.dao.neo4j;
 
 import com.bi.dbpedia.model.neo4j.ResourceNode;
 import org.springframework.data.neo4j.annotation.Query;

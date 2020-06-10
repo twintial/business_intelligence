@@ -7,7 +7,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-@Component
+/**
+ * 订阅了mysql的增量消费，当mysql中的数据发生变化时候，同时对neo4j和elasticsearch的数据更新
+ */
+//@Component
 public class KafkaReceiver {
 
     @KafkaListener(topics = {"example"})
