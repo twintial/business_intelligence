@@ -12,8 +12,8 @@ import java.io.Serializable;
 public class Link implements Serializable {
 
     // 对应Node的id
-    private String source;
+    private Long source;
     // 对应Node的id
-    private String target;
+    private Long target;
     private String type;
 }

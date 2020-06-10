@@ -10,10 +10,10 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Node implements Serializable {
+public class Entity implements Serializable {
 
     // 标示符号
-    private String id;
+    private Long id;
     private String name;
     private String uri;
     private List<String> label;
