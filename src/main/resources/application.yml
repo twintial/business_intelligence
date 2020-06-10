@@ -1,6 +1,37 @@
+server:
+  port: 8899
 spring:
-  data:
-    neo4j:
-      uri: blot
-      username: neo4j
-      password: abcd@1234
+  kafka:
+    bootstrap-servers: hailuo.aliyun.com:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: dbpedia
+      auto-commit-interval: 1000
+      enable-auto-commit: true
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#  data:
+#    neo4j:
+#      uri: blot://192.168.3.14:7687
+#      username: neo4j
+#      password: abcd@1234
+  datasource:
+    druid:
+      url: jdbc:mysql://cdb-ezjh4cma.bj.tencentcdb.com:10210/Test?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+      username: root
+      password: abcd1234
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      # 初始化大小，最小，最大
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false

@@ -9,5 +9,4 @@ public class DbpediaApplication {
     public static void main(String[] args) {
         SpringApplication.run(DbpediaApplication.class, args);
     }
-
 }
