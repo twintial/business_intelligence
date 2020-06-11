@@ -1,8 +1,10 @@
 package com.bi.dbpedia.controller;
 
+import com.bi.dbpedia.dao.elasticsearch.UserRepository;
 import com.bi.dbpedia.dao.neo4j.RelationshipRepository;
 import com.bi.dbpedia.dao.neo4j.ResourceRepository;
 import com.bi.dbpedia.dao.neo4j.Test;
+import com.bi.dbpedia.model.elasticsearch.User;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.neo4j.driver.*;
 import org.neo4j.driver.types.Node;
@@ -23,6 +25,9 @@ public class TestController {
 
     @Autowired
     private SqlSessionTemplate sqlSessionTemplate;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private Driver neo4jDriver;
@@ -54,4 +59,13 @@ public class TestController {
         }
 
     }
+
+    @GetMapping("/els")
+    public void elsTest() {
+        Iterable<User> all = userRepository.findAll();
+        for (User user : all) {
+            System.out.println(user);
+        }
+    }
+
 }

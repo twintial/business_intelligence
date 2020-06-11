@@ -5,6 +5,7 @@ import com.bi.dbpedia.model.Entity;
 import com.bi.dbpedia.model.GraphData;
 import com.bi.dbpedia.model.Link;
 import com.bi.dbpedia.service.BasicQueryService;
+import com.bi.dbpedia.util.DataFormat;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Value;
 import org.neo4j.driver.types.Node;
@@ -23,26 +24,15 @@ public class BasicQueryServiceImpl implements BasicQueryService {
 
     @Override
     public GraphData queryOneEntityAndRelationships(String name) {
+        // 之后需要添加缓存
         List<Record> records = neo4jRepository.queryOneEntityAndRelations(name);
-        Set<Entity> entityList = new HashSet<>();
-        Set<Link> linkList = new HashSet<>();
-        for (Record record : records) {
-            for (Value value : record.values()) {
-                Path path = value.asPath();
-                Iterable<Node> nodes = path.nodes();
-                Iterable<Relationship> relationships = path.relationships();
+        return DataFormat.CovertRecordToData(records);
+    }
 
-                for (Node node : nodes) {
-                    Map<String, Object> map = node.asMap();
-                    // 暂时这样写，等有数据了改
-                    entityList.add(new Entity(node.id(), "1", "1", Collections.singletonList("1")));
-                }
-
-                for (Relationship relationship : relationships) {
-                    linkList.add(new Link(relationship.startNodeId(), relationship.endNodeId(), relationship.type()));
-                }
-            }
-        }
-        return new GraphData(entityList, linkList);
+    @Override
+    public GraphData queryTwoEntityWithNLinks(String name1, String name2, int nLinks) {
+        // 之后需要添加缓存
+        List<Record> records = neo4jRepository.queryTwoEntityWithNLink(name1, name2, nLinks);
+        return DataFormat.CovertRecordToData(records);
     }
 }

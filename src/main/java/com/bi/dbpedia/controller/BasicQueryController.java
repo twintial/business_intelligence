@@ -17,6 +17,13 @@ public class BasicQueryController {
     @PostMapping("/one")
     public CommonResult<GraphData> queryOneEntityAndRelationShips(@RequestParam("name") String name) {
         GraphData graphData = basicQueryService.queryOneEntityAndRelationships(name);
-        return CommonResult.success(graphData, "query success");
+        return CommonResult.success(graphData, "query one success");
+    }
+
+    @PostMapping("/two")
+    public CommonResult<GraphData> queryTwoEntityWithNLinks(
+            @RequestParam("name1") String name1, @RequestParam("name2") String name2, @RequestParam("nLinks") int n) {
+        GraphData graphData = basicQueryService.queryTwoEntityWithNLinks(name1, name2, n);
+        return CommonResult.success(graphData, "query two success");
     }
 }
