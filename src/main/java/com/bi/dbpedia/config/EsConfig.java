@@ -8,7 +8,7 @@ import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.RestClients;
 
 @Configuration
-public class EsConf {
+public class EsConfig {
 
     @Value("${elasticsearch.ip}")
     private String ip;
