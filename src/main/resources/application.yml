@@ -43,6 +43,22 @@ spring:
       uri: bolt://192.168.3.14:7687
       username: neo4j
       password: abcd1234
+  redis:
+    host: lulu.aliyun.com
+    database: 0
+    port: 6379
+    password: abcd12345
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+    timeout: 3000ms
+
+redis:
+  key:
+    expire: 120 # 分钟
 
 elasticsearch:
-  ip: 47.94.152.5:9200
+  ip: lulu.aliyun.com:9200

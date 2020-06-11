@@ -1,10 +1,13 @@
 package com.bi.dbpedia.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bi.dbpedia.dao.elasticsearch.UserRepository;
 import com.bi.dbpedia.dao.neo4j.RelationshipRepository;
 import com.bi.dbpedia.dao.neo4j.ResourceRepository;
 import com.bi.dbpedia.dao.neo4j.Test;
 import com.bi.dbpedia.model.elasticsearch.User;
+import com.bi.dbpedia.service.RedisService;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.neo4j.driver.*;
 import org.neo4j.driver.types.Node;
@@ -60,12 +63,34 @@ public class TestController {
 
     }
 
+    // es test
     @GetMapping("/els")
     public void elsTest() {
         Iterable<User> all = userRepository.findAll();
         for (User user : all) {
             System.out.println(user);
         }
+    }
+
+    @Autowired
+    private RedisService redisService;
+    // redis test
+    @GetMapping("/redis/{key}")
+    public void redisTest(@PathVariable String key) {
+        String s = redisService.get(key);
+        System.out.println(s);
+        User user = JSON.parseObject(s, User.class);
+        System.out.println(user);
+    }
+
+    @GetMapping("redis/add/{key}")
+    public void redisAdd(@PathVariable String key) {
+        User user = new User("111", "111","111","111","p");
+        String s1 = JSON.toJSON(user).toString();
+        System.out.println(s1);
+
+        redisService.set(key, s1);
+        redisService.expire(key, 1);
     }
 
 }
