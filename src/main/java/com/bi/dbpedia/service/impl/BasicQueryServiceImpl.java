@@ -1,16 +1,10 @@
 package com.bi.dbpedia.service.impl;
 
 import com.bi.dbpedia.dao.Neo4jRepository;
-import com.bi.dbpedia.model.Entity;
 import com.bi.dbpedia.model.GraphData;
-import com.bi.dbpedia.model.Link;
 import com.bi.dbpedia.service.BasicQueryService;
 import com.bi.dbpedia.util.DataFormat;
 import org.neo4j.driver.Record;
-import org.neo4j.driver.Value;
-import org.neo4j.driver.types.Node;
-import org.neo4j.driver.types.Path;
-import org.neo4j.driver.types.Relationship;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

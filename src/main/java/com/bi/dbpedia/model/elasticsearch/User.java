@@ -2,7 +2,7 @@ package com.bi.dbpedia.model.elasticsearch;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.neo4j.ogm.annotation.Id;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 @Data

@@ -15,5 +15,8 @@ public class Link implements Serializable {
     private Long source;
     // 对应Node的id
     private Long target;
+
     private String type;
+    private String uri;
+    private String label;
 }

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 
@@ -12,6 +11,6 @@ import java.util.Set;
 @AllArgsConstructor
 public class GraphData implements Serializable {
 
-    private Set<Entity> nodes;
+    private Set<Resource> nodes;
     private Set<Link> links;
 }

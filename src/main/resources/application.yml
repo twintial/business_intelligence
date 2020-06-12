@@ -22,7 +22,7 @@ spring:
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
   datasource:
     druid:
-      url: jdbc:mysql://cdb-ezjh4cma.bj.tencentcdb.com:10210/Test?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+      url: jdbc:mysql://cdb-ezjh4cma.bj.tencentcdb.com:10210/Business_Intelligence?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
       username: root
       password: abcd1234
       driver-class-name: com.mysql.cj.jdbc.Driver

@@ -28,20 +28,23 @@ public class Neo4jRepository {
     }
 
     public List<Record> queryOneEntityAndRelations(String name) {
+        // 无视大小写
+        name = "(?i)" + name;
         // 可以考虑将cyber语句放入一个文件内或者数据库内
-        String cyber = "match p=(n:Resource{uri:$name})-[]-(m:Resource) return p";
+        String cyber = "match p=(n:Resource)-[]-(m:Resource) where n.name=~$name return p";
         Map<String, Object> params = new HashMap<>();
         params.put("name", name);
         return queryWithCyber(cyber, params);
     }
 
     public List<Record> queryTwoEntityWithNLink(String name1, String name2, int n) {
+        name1 = "(?i)" + name1;
+        name2 = "(?i)" + name2;
         // 可以考虑将cyber语句放入一个文件内或者数据库内
-        String cyber = "match p=(n:Resource{uri:$name1})-[*1..$n]-(m{uri:$name2}) return p";
+        String cyber = String.format("match p=(n:Resource)-[*1..%d]-(m:Resource) where n.name=~$name1 and m.name=~$name2 return p", n);
         Map<String, Object> params = new HashMap<>();
         params.put("name1", name1);
         params.put("name2", name2);
-        params.put("n", n);
         return queryWithCyber(cyber, params);
     }
 }

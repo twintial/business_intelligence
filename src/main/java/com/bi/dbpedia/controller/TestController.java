@@ -1,11 +1,14 @@
 package com.bi.dbpedia.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.bi.dbpedia.dao.DataTableMapper;
+import com.bi.dbpedia.dao.elasticsearch.EntityRepository;
+import com.bi.dbpedia.dao.elasticsearch.PredicateRepository;
 import com.bi.dbpedia.dao.elasticsearch.UserRepository;
-import com.bi.dbpedia.dao.neo4j.RelationshipRepository;
-import com.bi.dbpedia.dao.neo4j.ResourceRepository;
-import com.bi.dbpedia.dao.neo4j.Test;
+import com.bi.dbpedia.model.DataTable;
+import com.bi.dbpedia.model.Predicate;
+import com.bi.dbpedia.model.elasticsearch.EsEntity;
+import com.bi.dbpedia.model.elasticsearch.EsPredicate;
 import com.bi.dbpedia.model.elasticsearch.User;
 import com.bi.dbpedia.service.RedisService;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -19,8 +22,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/test")
@@ -31,6 +36,15 @@ public class TestController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private EntityRepository entityRepository;
+
+    @Autowired
+    private PredicateRepository predicateRepository;
+
+    @Autowired
+    private DataTableMapper dataTableMapper;
 
     @Autowired
     private Driver neo4jDriver;
@@ -66,14 +80,15 @@ public class TestController {
     // es test
     @GetMapping("/els")
     public void elsTest() {
-        Iterable<User> all = userRepository.findAll();
-        for (User user : all) {
-            System.out.println(user);
+        Iterable<EsEntity> all = entityRepository.findAll();
+        for (EsEntity esEntity : all) {
+            System.out.println(esEntity);
         }
     }
 
     @Autowired
     private RedisService redisService;
+
     // redis test
     @GetMapping("/redis/{key}")
     public void redisTest(@PathVariable String key) {
@@ -85,12 +100,30 @@ public class TestController {
 
     @GetMapping("redis/add/{key}")
     public void redisAdd(@PathVariable String key) {
-        User user = new User("111", "111","111","111","p");
+        User user = new User("111", "111", "111", "111", "p");
         String s1 = JSON.toJSON(user).toString();
         System.out.println(s1);
 
         redisService.set(key, s1);
         redisService.expire(key, 1);
+    }
+
+    @GetMapping("/els/saveall")
+    public void saveAll() {
+        List<DataTable> dataTables = dataTableMapper.selectNoun();
+        Set<EsEntity> entities = new HashSet<>();
+        for (DataTable data : dataTables) {
+            entities.add(new EsEntity(data.getObject(), data.getObjectUri(), data.getObjectLabel()));
+            entities.add(new EsEntity(data.getSubject(), data.getSubjectUri(), data.getSubjectLabel()));
+        }
+        entityRepository.saveAll(entities);
+
+        List<Predicate> predicates = dataTableMapper.selectPred();
+        Set<EsPredicate> predicateSet = new HashSet<>();
+        for (Predicate predicate : predicates) {
+            predicateSet.add(new EsPredicate(predicate.getPredicate(), predicate.getPredicateUri(), predicate.getPredicateLabel()));
+        }
+        predicateRepository.saveAll(predicateSet);
     }
 
 }

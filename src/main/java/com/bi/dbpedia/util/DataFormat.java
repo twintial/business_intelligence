@@ -1,6 +1,6 @@
 package com.bi.dbpedia.util;
 
-import com.bi.dbpedia.model.Entity;
+import com.bi.dbpedia.model.Resource;
 import com.bi.dbpedia.model.GraphData;
 import com.bi.dbpedia.model.Link;
 import org.neo4j.driver.Record;
@@ -14,7 +14,7 @@ import java.util.*;
 public class DataFormat {
 
     public static GraphData CovertRecordToData(List<Record> records){
-        Set<Entity> entityList = new HashSet<>();
+        Set<Resource> entityList = new HashSet<>();
         Set<Link> linkList = new HashSet<>();
         for (Record record : records) {
             for (Value value : record.values()) {
@@ -24,12 +24,16 @@ public class DataFormat {
 
                 for (Node node : nodes) {
                     Map<String, Object> map = node.asMap();
-                    // 暂时这样写，等有数据了改
-                    entityList.add(new Entity(node.id(), "1", "1", Collections.singletonList("1")));
+                    entityList.add(
+                            new Resource(node.id(),
+                            map.get("name").toString(),
+                            map.get("uri").toString(), map.get("label").toString()));
                 }
 
                 for (Relationship relationship : relationships) {
-                    linkList.add(new Link(relationship.startNodeId(), relationship.endNodeId(), relationship.type()));
+                    Map<String, Object> map = relationship.asMap();
+                    linkList.add(new Link(relationship.startNodeId(), relationship.endNodeId(),
+                            map.get("name").toString(), map.get("uri").toString(), map.get("label").toString()));
                 }
             }
         }

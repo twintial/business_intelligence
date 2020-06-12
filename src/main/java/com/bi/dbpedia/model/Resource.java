@@ -10,11 +10,11 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Entity implements Serializable {
+public class Resource implements Serializable {
 
     // 标示符号
     private Long id;
     private String name;
     private String uri;
-    private List<String> label;
+    private String label;
 }
