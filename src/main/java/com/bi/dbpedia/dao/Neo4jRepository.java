@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class Neo4jRepository {
@@ -50,6 +51,10 @@ public class Neo4jRepository {
     }
 
     public List<Record> basicQuery(Neo4jQueryParam param) {
+        String cyber = "match p=(n:Resource)-[l:Relation]-(m:Resource) return p";
+
+        Optional<Neo4jQueryParam> optParam = Optional.ofNullable(param);
+
         return null;
     }
 }
