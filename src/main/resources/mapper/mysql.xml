@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.bi.dbpedia">
+<mapper namespace="com.bi.dbpedia.dao.DataTableMapper">
     <select id="selectAll" resultType="Map">
         select * from ACCOUNT where id=#{testId}
     </select>
+
+    <insert id="insertResourceLabel" parameterType="java.util.HashSet">
+        insert into resource_label(label) values
+        <foreach collection="collection" item="item" index="index" separator=",">
+            (#{item})
+        </foreach>
+    </insert>
+
+    <insert id="insertPredicateLabel" parameterType="java.util.HashSet">
+        insert into predicate_label(label) values
+        <foreach collection="collection" item="item" index="index" separator=",">
+            (#{item})
+        </foreach>
+    </insert>
 </mapper>

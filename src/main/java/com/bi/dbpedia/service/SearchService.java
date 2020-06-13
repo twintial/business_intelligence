@@ -1,12 +1,13 @@
 package com.bi.dbpedia.service;
 
-import com.bi.dbpedia.dto.EntityParam;
-import com.bi.dbpedia.model.elasticsearch.EsEntity;
+import com.bi.dbpedia.dto.SearchParam;
+import com.bi.dbpedia.dto.SearchResult;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface SearchService {
 
-    List<EsEntity> searchEntity(EntityParam entityParam, int page, int size);
+    List<SearchResult> searchResource(SearchParam searchParam, int page, int size);
+
+    List<SearchResult> searchPredicate(SearchParam searchParam, int page, int size);
 }

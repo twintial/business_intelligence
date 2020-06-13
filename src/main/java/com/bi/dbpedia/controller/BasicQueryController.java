@@ -2,6 +2,7 @@ package com.bi.dbpedia.controller;
 
 
 import com.bi.dbpedia.common.api.CommonResult;
+import com.bi.dbpedia.dto.Neo4jQueryParam;
 import com.bi.dbpedia.model.GraphData;
 import com.bi.dbpedia.service.BasicQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,10 @@ public class BasicQueryController {
             @RequestParam("name1") String name1, @RequestParam("name2") String name2, @RequestParam("nLinks") int n) {
         GraphData graphData = basicQueryService.queryTwoEntityWithNLinks(name1, name2, n);
         return CommonResult.success(graphData, "query two success");
+    }
+
+    @PostMapping("/query")
+    public void basicQuery(@RequestBody Neo4jQueryParam queryParam) {
+
     }
 }

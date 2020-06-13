@@ -1,5 +1,6 @@
 package com.bi.dbpedia.dao;
 
+import com.bi.dbpedia.dto.Neo4jQueryParam;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
@@ -46,5 +47,9 @@ public class Neo4jRepository {
         params.put("name1", name1);
         params.put("name2", name2);
         return queryWithCyber(cyber, params);
+    }
+
+    public List<Record> basicQuery(Neo4jQueryParam param) {
+        return null;
     }
 }

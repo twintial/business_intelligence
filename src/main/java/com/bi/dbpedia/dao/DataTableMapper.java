@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper
 @Repository
@@ -19,4 +20,7 @@ public interface DataTableMapper {
     @Select("select predicate, predicate_uri as predicateUri, predicate_label as predicateLabel" +
             " from data_table")
     List<Predicate> selectPred();
+
+    long insertResourceLabel(Set<String> labels);
+    long insertPredicateLabel(Set<String> labels);
 }

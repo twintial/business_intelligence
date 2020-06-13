@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.awt.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -112,18 +113,27 @@ public class TestController {
     public void saveAll() {
         List<DataTable> dataTables = dataTableMapper.selectNoun();
         Set<EsEntity> entities = new HashSet<>();
+        Set<String> labels1 = new HashSet<>();
         for (DataTable data : dataTables) {
             entities.add(new EsEntity(data.getObject(), data.getObjectUri(), data.getObjectLabel()));
             entities.add(new EsEntity(data.getSubject(), data.getSubjectUri(), data.getSubjectLabel()));
+
+            labels1.add(data.getSubjectLabel());
+            labels1.add(data.getObjectLabel());
         }
-        entityRepository.saveAll(entities);
+        //entityRepository.saveAll(entities);
+        dataTableMapper.insertResourceLabel(labels1);
+
 
         List<Predicate> predicates = dataTableMapper.selectPred();
+        Set<String> labels2 = new HashSet<>();
         Set<EsPredicate> predicateSet = new HashSet<>();
         for (Predicate predicate : predicates) {
             predicateSet.add(new EsPredicate(predicate.getPredicate(), predicate.getPredicateUri(), predicate.getPredicateLabel()));
+            labels2.add(predicate.getPredicateLabel());
         }
-        predicateRepository.saveAll(predicateSet);
+        //predicateRepository.saveAll(predicateSet);
+        dataTableMapper.insertPredicateLabel(labels2);
     }
 
 }
