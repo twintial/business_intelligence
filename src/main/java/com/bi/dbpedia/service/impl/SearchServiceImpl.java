@@ -1,8 +1,10 @@
 package com.bi.dbpedia.service.impl;
 
+import com.bi.dbpedia.dto.EsPageInfo;
 import com.bi.dbpedia.dto.SearchParam;
 import com.bi.dbpedia.dto.SearchResult;
 import com.bi.dbpedia.service.SearchService;
+import org.apache.lucene.search.TotalHits;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -30,7 +32,7 @@ public class SearchServiceImpl implements SearchService {
     private RestHighLevelClient highLevelClient;
 
     @Override
-    public List<SearchResult> searchResource(SearchParam searchParam, int page, int size) {
+    public EsPageInfo searchResource(SearchParam searchParam, int page, int size) {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
         if (!StringUtils.isEmpty(searchParam.getName())) {
@@ -46,6 +48,7 @@ public class SearchServiceImpl implements SearchService {
         sourceBuilder.query(boolQueryBuilder);
         sourceBuilder.from((page - 1) * size);
         sourceBuilder.size(size);
+        //sourceBuilder.sort("name");
 
 
         SearchRequest searchRequest = new SearchRequest("entity");
@@ -62,6 +65,10 @@ public class SearchServiceImpl implements SearchService {
             e.printStackTrace();
         }
         SearchHits hits = response.getHits();
+
+        // 获取总数
+        TotalHits totalHits = hits.getTotalHits();
+
         SearchHit[] searchHits = hits.getHits();
         List<SearchResult> searchResults = new ArrayList<>();
         for (SearchHit hit : searchHits) {
@@ -69,11 +76,12 @@ public class SearchServiceImpl implements SearchService {
             searchResults.add(new SearchResult(sourceAsMap.get("name").toString(),
                     sourceAsMap.get("label").toString(), sourceAsMap.get("uri").toString()));
         }
-        return searchResults;
+
+        return new EsPageInfo(searchResults, totalHits.value, (int)(totalHits.value / size) + 1);
     }
 
     @Override
-    public List<SearchResult> searchPredicate(SearchParam searchParam, int page, int size) {
+    public EsPageInfo searchPredicate(SearchParam searchParam, int page, int size) {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
         if (!StringUtils.isEmpty(searchParam.getName())) {
@@ -105,6 +113,10 @@ public class SearchServiceImpl implements SearchService {
             e.printStackTrace();
         }
         SearchHits hits = response.getHits();
+
+        // 获取总数
+        TotalHits totalHits = hits.getTotalHits();
+
         SearchHit[] searchHits = hits.getHits();
         List<SearchResult> searchResults = new ArrayList<>();
         for (SearchHit hit : searchHits) {
@@ -112,6 +124,6 @@ public class SearchServiceImpl implements SearchService {
             searchResults.add(new SearchResult(sourceAsMap.get("name").toString(),
                     sourceAsMap.get("label").toString(), sourceAsMap.get("uri").toString()));
         }
-        return searchResults;
+        return new EsPageInfo(searchResults, totalHits.value, (int)(totalHits.value / size) + 1);
     }
 }
