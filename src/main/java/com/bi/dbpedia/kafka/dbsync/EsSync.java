@@ -42,7 +42,7 @@ public class EsSync implements AbstractSync {
             entityRepository.delete(new EsEntity(objectId));
             entityRepository.save(new EsEntity(data.getObject(), data.getObjectUri(), data.getObjectLabel()));
 
-            // 更新object
+            // 更新subject
             String subjectId = oldMap.get("subject") != null ? oldMap.get("subject"): data.getSubject();
             entityRepository.delete(new EsEntity(subjectId));
             entityRepository.save(new EsEntity(data.getSubject(), data.getSubjectUri(), data.getSubjectLabel()));
