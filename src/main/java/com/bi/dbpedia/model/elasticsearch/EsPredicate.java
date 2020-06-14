@@ -17,4 +17,8 @@ public class EsPredicate {
     private String uri;
     @Field(type = FieldType.Text, analyzer = "ik_smart", index = true, store = false, searchAnalyzer = "ik_smart")
     private String label;
+
+    public EsPredicate(String name) {
+        this.name = name;
+    }
 }

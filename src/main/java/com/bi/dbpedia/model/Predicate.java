@@ -10,4 +10,5 @@ public class Predicate implements Serializable {
     private String predicate;
     private String predicateUri;
     private String predicateLabel;
+
 }
