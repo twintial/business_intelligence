@@ -27,12 +27,12 @@ public class Neo4jSync implements AbstractSync {
     public void update(List<DataTable> newList, List<Map<String, String>> oldList) {
         for (int i=0;i<oldList.size();i++) {
 
-            String cypher = "match (n:Resource{name:$name0})" +
-                    "<-[r:Relation]-"+
-                    "(m:Resource{name:$name00})"+
-                    "set n.name=$name1 set n.label=$label1 set n.uri=$uri1"+
-                    "set m.name=$name2 set m.label=$label2 set m.uri=$uri2"+
-                    "set r.name=$name3 set r.label=$label3 set r.uri=$uri3";
+            String cypher = "match (n:Resource{name:$o_name})" +
+                    "<-[r:Relation{name:$l_name}]-"+
+                    "(m:Resource{name:$s_name00})"+
+                    " set n.name=$name1 set n.label=$label1 set n.uri=$uri1"+
+                    " set m.name=$name2 set m.label=$label2 set m.uri=$uri2"+
+                    " set r.name=$name3 set r.label=$label3 set r.uri=$uri3";
             Map<String, Object> params = new HashMap<>();
             params.put("name1", newList.get(i).getObject());
             params.put("uri1", newList.get(i).getObjectUri());
@@ -43,8 +43,8 @@ public class Neo4jSync implements AbstractSync {
             params.put("name3", newList.get(i).getPredicate());
             params.put("uri3", newList.get(i).getPredicateUri());
             params.put("label3", newList.get(i).getPredicateLabel());
-            params.put("name0",oldList.get(i).get("object"));
-            params.put("name00",oldList.get(i).get("subject"));
+            params.put("o_name",oldList.get(i).get("object"));
+            params.put("s_name",oldList.get(i).get("subject"));
             neo4jTemplate.run(cypher, params);
             System.out.println("neo4j update");
         }
@@ -68,8 +68,8 @@ public class Neo4jSync implements AbstractSync {
             params.put("uri3", dataTable.getPredicateUri());
             params.put("label3", dataTable.getPredicateLabel());
             neo4jTemplate.run(cypher, params);
-            System.out.println("neo4j delete");
         }
+        System.out.println("neo4j delete");
     }
 
     @Override

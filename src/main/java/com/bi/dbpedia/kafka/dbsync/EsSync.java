@@ -29,7 +29,6 @@ public class EsSync implements AbstractSync {
     @Override
     public void update(List<DataTable> newList, List<Map<String, String>> oldList) {
         System.out.println("es update");
-        highLevelClient.update()
     }
 
     @Override
@@ -45,10 +44,10 @@ public class EsSync implements AbstractSync {
     @Override
     public void insert(List<DataTable> insertList) {
         System.out.println("es insert");
-        for (DataTable data : insertList) {
-            entityRepository.save(new EsEntity(data.getObject(), data.getObjectUri(), data.getObjectLabel()));
-            entityRepository.save(new EsEntity(data.getSubject(), data.getSubjectUri(), data.getSubjectLabel()));
-            predicateRepository.save(new EsPredicate(data.getPredicate(), data.getPredicateUri(), data.getPredicateLabel()));
-        }
+//        for (DataTable data : insertList) {
+//            entityRepository.save(new EsEntity(data.getObject(), data.getObjectUri(), data.getObjectLabel()));
+//            entityRepository.save(new EsEntity(data.getSubject(), data.getSubjectUri(), data.getSubjectLabel()));
+//            predicateRepository.save(new EsPredicate(data.getPredicate(), data.getPredicateUri(), data.getPredicateLabel()));
+//        }
     }
 }
