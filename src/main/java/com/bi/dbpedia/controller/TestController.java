@@ -5,7 +5,7 @@ import com.bi.dbpedia.dao.DataTableMapper;
 import com.bi.dbpedia.dao.elasticsearch.EntityRepository;
 import com.bi.dbpedia.dao.elasticsearch.PredicateRepository;
 import com.bi.dbpedia.dao.elasticsearch.UserRepository;
-import com.bi.dbpedia.model.DataTable;
+import com.bi.dbpedia.model.Noun;
 import com.bi.dbpedia.model.Predicate;
 import com.bi.dbpedia.model.elasticsearch.EsEntity;
 import com.bi.dbpedia.model.elasticsearch.EsPredicate;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.awt.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -111,10 +110,10 @@ public class TestController {
 
     @GetMapping("/els/saveall")
     public void saveAll() {
-        List<DataTable> dataTables = dataTableMapper.selectNoun();
+        List<Noun> nouns = dataTableMapper.selectNoun();
         Set<EsEntity> entities = new HashSet<>();
         Set<String> labels1 = new HashSet<>();
-        for (DataTable data : dataTables) {
+        for (Noun data : nouns) {
             entities.add(new EsEntity(data.getObject(), data.getObjectUri(), data.getObjectLabel()));
             entities.add(new EsEntity(data.getSubject(), data.getSubjectUri(), data.getSubjectLabel()));
 

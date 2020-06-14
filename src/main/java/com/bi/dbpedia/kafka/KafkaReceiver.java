@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bi.dbpedia.kafka.opretion.OpFactory;
 import com.bi.dbpedia.model.DataTable;
+import com.bi.dbpedia.model.Noun;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;

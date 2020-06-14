@@ -2,17 +2,15 @@ package com.bi.dbpedia.model;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class DataTable {
+public class Noun implements Serializable {
 
     private String subject;
-    private String predicate;
     private String object;
     private String subjectUri;
-    private String predicateUri;
     private String objectUri;
     private String subjectLabel;
-    private String predicateLabel;
     private String objectLabel;
-
 }
