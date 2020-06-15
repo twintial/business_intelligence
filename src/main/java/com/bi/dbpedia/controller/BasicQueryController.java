@@ -2,7 +2,6 @@ package com.bi.dbpedia.controller;
 
 
 import com.bi.dbpedia.common.api.CommonResult;
-import com.bi.dbpedia.dto.Neo4jQueryParam;
 import com.bi.dbpedia.dto.OneNodeParam;
 import com.bi.dbpedia.dto.TwoNodeParam;
 import com.bi.dbpedia.model.GraphData;
@@ -27,6 +26,15 @@ public class BasicQueryController {
     public CommonResult<GraphData> queryTwoEntityWithNLinks(@RequestBody TwoNodeParam twoNodeParam) {
         GraphData graphData = basicQueryService.queryTwoEntityWithNLinks(twoNodeParam);
         return CommonResult.success(graphData, "query two success");
+    }
+
+    @PostMapping("/extend")
+    public CommonResult<GraphData> extendQuery(@RequestParam String name) {
+        OneNodeParam param = new OneNodeParam();
+        param.setNodeName(name);
+        param.setIsUnidirectional(false);
+        GraphData graphData = basicQueryService.queryOneEntityAndRelationships(param);
+        return CommonResult.success(graphData, "extend query success");
     }
 
 }

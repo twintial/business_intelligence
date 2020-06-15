@@ -45,13 +45,20 @@ public class BasicQueryServiceImpl implements BasicQueryService {
 
     @Override
     public GraphData queryTwoEntityWithNLinks(TwoNodeParam param) {
-        // 之后需要添加缓存
-        List<Record> records = neo4jRepository.queryTwoEntityWithNLink(param);
-        return DataFormat.CovertRecordToData(records);
-    }
-
-    @Override
-    public GraphData basicQuery(Neo4jQueryParam param) {
-        return null;
+        // 添加了缓存
+        String queryKey = "Two_" + param.toString();
+        String result = redisService.get(queryKey);
+        if (result == null) {
+            List<Record> records = neo4jRepository.queryTwoEntityWithNLink(param);
+            if (records == null) {
+                return null;
+            }
+            GraphData graphData = DataFormat.CovertRecordToData(records);
+            redisService.set(queryKey, JSON.toJSONString(graphData));
+            redisService.expire(queryKey, 1);
+            return graphData;
+        } else {
+            return JSON.parseObject(result, GraphData.class);
+        }
     }
 }

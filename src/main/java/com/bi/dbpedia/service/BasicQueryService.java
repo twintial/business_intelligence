@@ -10,6 +10,4 @@ public interface BasicQueryService {
     GraphData queryOneEntityAndRelationships(OneNodeParam param);
 
     GraphData queryTwoEntityWithNLinks(TwoNodeParam param);
-
-    GraphData basicQuery(Neo4jQueryParam param);
 }
