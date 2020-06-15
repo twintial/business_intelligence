@@ -3,6 +3,8 @@ package com.bi.dbpedia.controller;
 
 import com.bi.dbpedia.common.api.CommonResult;
 import com.bi.dbpedia.dto.Neo4jQueryParam;
+import com.bi.dbpedia.dto.OneNodeParam;
+import com.bi.dbpedia.dto.TwoNodeParam;
 import com.bi.dbpedia.model.GraphData;
 import com.bi.dbpedia.service.BasicQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +18,18 @@ public class BasicQueryController {
     BasicQueryService basicQueryService;
 
     @PostMapping("/one")
-    public CommonResult<GraphData> queryOneEntityAndRelationShips(@RequestParam("name") String name) {
-        GraphData graphData = basicQueryService.queryOneEntityAndRelationships(name);
+    public CommonResult<GraphData> queryOneEntityAndRelationShips(@RequestBody OneNodeParam oneNodeParam) {
+        GraphData graphData = basicQueryService.queryOneEntityAndRelationships(oneNodeParam);
         return CommonResult.success(graphData, "query one success");
     }
 
     @PostMapping("/two")
-    public CommonResult<GraphData> queryTwoEntityWithNLinks(
-            @RequestParam("name1") String name1, @RequestParam("name2") String name2, @RequestParam("nLinks") int n) {
-        GraphData graphData = basicQueryService.queryTwoEntityWithNLinks(name1, name2, n);
+    public CommonResult<GraphData> queryTwoEntityWithNLinks(@RequestBody TwoNodeParam twoNodeParam) {
+        GraphData graphData = basicQueryService.queryTwoEntityWithNLinks(twoNodeParam);
         return CommonResult.success(graphData, "query two success");
     }
+
+
 
     @PostMapping("/query")
     public void basicQuery(@RequestBody Neo4jQueryParam queryParam) {

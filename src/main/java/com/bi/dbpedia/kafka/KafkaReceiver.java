@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * 订阅了mysql的增量消费，当mysql中的数据发生变化时候，同时对neo4j和elasticsearch的数据更新
  */
 @Slf4j
-@Component
+//@Component
 public class KafkaReceiver {
 
     @Autowired

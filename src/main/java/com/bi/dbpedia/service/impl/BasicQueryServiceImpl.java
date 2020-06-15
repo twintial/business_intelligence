@@ -3,6 +3,8 @@ package com.bi.dbpedia.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.bi.dbpedia.dao.Neo4jRepository;
 import com.bi.dbpedia.dto.Neo4jQueryParam;
+import com.bi.dbpedia.dto.OneNodeParam;
+import com.bi.dbpedia.dto.TwoNodeParam;
 import com.bi.dbpedia.model.GraphData;
 import com.bi.dbpedia.service.BasicQueryService;
 import com.bi.dbpedia.service.RedisService;
@@ -23,15 +25,18 @@ public class BasicQueryServiceImpl implements BasicQueryService {
     RedisService redisService;
 
     @Override
-    public GraphData queryOneEntityAndRelationships(String name) {
+    public GraphData queryOneEntityAndRelationships(OneNodeParam param) {
         // 添加了缓存
-        String queryType = "One_";
-        String result = redisService.get(queryType + name);
+        String queryKey = "One_" + param.toString();
+        String result = redisService.get(queryKey);
         if (result == null) {
-            List<Record> records = neo4jRepository.queryOneEntityAndRelations(name);
+            List<Record> records = neo4jRepository.queryOneEntityAndRelations(param);
+            if (records == null) {
+                return null;
+            }
             GraphData graphData = DataFormat.CovertRecordToData(records);
-            redisService.set(queryType + name, JSON.toJSONString(graphData));
-            redisService.expire(queryType + name, 1);
+            redisService.set(queryKey, JSON.toJSONString(graphData));
+            redisService.expire(queryKey, 1);
             return graphData;
         } else {
             return JSON.parseObject(result, GraphData.class);
@@ -39,9 +44,9 @@ public class BasicQueryServiceImpl implements BasicQueryService {
     }
 
     @Override
-    public GraphData queryTwoEntityWithNLinks(String name1, String name2, int nLinks) {
+    public GraphData queryTwoEntityWithNLinks(TwoNodeParam param) {
         // 之后需要添加缓存
-        List<Record> records = neo4jRepository.queryTwoEntityWithNLink(name1, name2, nLinks);
+        List<Record> records = neo4jRepository.queryTwoEntityWithNLink(param);
         return DataFormat.CovertRecordToData(records);
     }
 

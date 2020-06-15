@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * 全局异常处理器
  */
-@ControllerAdvice
+// @ControllerAdvice
 @ResponseBody
 public class GlobalExceptionInterceptor {
 
