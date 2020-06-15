@@ -29,10 +29,4 @@ public class BasicQueryController {
         return CommonResult.success(graphData, "query two success");
     }
 
-
-
-    @PostMapping("/query")
-    public void basicQuery(@RequestBody Neo4jQueryParam queryParam) {
-
-    }
 }
