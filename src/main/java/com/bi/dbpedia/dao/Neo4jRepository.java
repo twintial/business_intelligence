@@ -42,7 +42,7 @@ public class Neo4jRepository {
         String direction = param.getIsUnidirectional() ? "->" : "-";
         StringBuilder constrains = new StringBuilder("where");
         if (!StringUtils.isEmpty(param.getNodeName())) {
-            constrains.append(" n.name=~'(?i)").append(param.getNodeName()).append("'");
+            constrains.append("and n.name=~'(?i)").append(param.getNodeName()).append("'");
         }
         if (!StringUtils.isEmpty(param.getNodeLabel())) {
             constrains.append("and n.label=~'(?i)").append(param.getNodeLabel()).append("'");
@@ -56,7 +56,7 @@ public class Neo4jRepository {
         if (constrains.toString().equals("where")) {
             return null;
         }
-        cyber = String.format(cyber, direction, constrains.toString());
+        cyber = String.format(cyber, direction, constrains.toString().replaceFirst("and", ""));
         return queryWithCyber(cyber, null);
         // 无视大小写
 //        name = "(?i)" + name;
@@ -83,7 +83,7 @@ public class Neo4jRepository {
         String direction = param.getIsUnidirectional() ? "->" : "-";
         StringBuilder constrains = new StringBuilder("where");
         if (!StringUtils.isEmpty(param.getNodeName1())) {
-            constrains.append(" n.name=~'(?i)").append(param.getNodeName1()).append("'");
+            constrains.append("and n.name=~'(?i)").append(param.getNodeName1()).append("'");
         }
         if (!StringUtils.isEmpty(param.getNodeLabel1())) {
             constrains.append("and n.label=~'(?i)").append(param.getNodeLabel1()).append("'");
@@ -98,7 +98,8 @@ public class Neo4jRepository {
         if (constrains.toString().equals("where")) {
             return null;
         }
-        cyber = String.format(cyber, param.getMaxLinks(), lc.toString(), direction, constrains.toString());
+        cyber = String.format(cyber, param.getMaxLinks(), lc.toString(),
+                direction, constrains.toString().replaceFirst("and", ""));
         System.out.println(cyber);
 //        name1 = "(?i)" + name1;
 //        name2 = "(?i)" + name2;
