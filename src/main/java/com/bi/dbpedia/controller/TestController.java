@@ -9,7 +9,7 @@ import com.bi.dbpedia.model.Noun;
 import com.bi.dbpedia.model.Predicate;
 import com.bi.dbpedia.model.elasticsearch.EsEntity;
 import com.bi.dbpedia.model.elasticsearch.EsPredicate;
-import com.bi.dbpedia.model.elasticsearch.User;
+import com.bi.dbpedia.model.elasticsearch.EsUser;
 import com.bi.dbpedia.service.RedisService;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.neo4j.driver.*;
@@ -94,14 +94,14 @@ public class TestController {
     public void redisTest(@PathVariable String key) {
         String s = redisService.get(key);
         System.out.println(s);
-        User user = JSON.parseObject(s, User.class);
-        System.out.println(user);
+        EsUser esUser = JSON.parseObject(s, EsUser.class);
+        System.out.println(esUser);
     }
 
     @GetMapping("redis/add/{key}")
     public void redisAdd(@PathVariable String key) {
-        User user = new User("111", "111", "111", "111", "p");
-        String s1 = JSON.toJSON(user).toString();
+        EsUser esUser = new EsUser("111", "111", "111", "111", "p");
+        String s1 = JSON.toJSON(esUser).toString();
         System.out.println(s1);
 
         redisService.set(key, s1);

@@ -8,7 +8,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 @Data
 @AllArgsConstructor
 @Document(indexName = "user", refreshInterval = "30s")
-public class User {
+public class EsUser {
 
     @Id
     private String id;
