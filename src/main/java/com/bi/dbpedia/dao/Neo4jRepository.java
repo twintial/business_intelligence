@@ -1,6 +1,5 @@
 package com.bi.dbpedia.dao;
 
-import com.bi.dbpedia.dto.Neo4jQueryParam;
 import com.bi.dbpedia.dto.OneNodeParam;
 import com.bi.dbpedia.dto.TwoNodeParam;
 import org.neo4j.driver.Driver;
@@ -11,11 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
-import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Repository
 public class Neo4jRepository {
@@ -111,11 +107,17 @@ public class Neo4jRepository {
         return queryWithCyber(cyber, null);
     }
 
-    public List<Record> basicQuery(Neo4jQueryParam param) {
-        String cyber = "match p=(n:Resource)-[l:Relation]-(m:Resource) return p";
+    public List<Record> searchFoundationPlace() {
+        String cyber = "match (n:Resource)-[a]->(m:Resource) where m.name=~'(?i)internet' and a.name=~'(?)industry' " +
+                "match (n)-[l:Relation]->(x:Resource) where l.name=~'(?i)foundationPlace' " +
+                "return x.name as name, count(x) as value order by value desc";
+        return queryWithCyber(cyber, null);
+    }
 
-        Optional<Neo4jQueryParam> optParam = Optional.ofNullable(param);
-
-        return null;
+    public List<Record> searchProducts() {
+        String cyber = "match (n:Resource)-[a]->(m:Resource) where m.name=~'(?i)internet' and a.name=~'(?)industry' " +
+                "match (n)-[l:Relation]->(x:Resource) where l.name=~'(?i)product' " +
+                "return x.name as name, count(x) as value order by value desc limit 10 ";
+        return queryWithCyber(cyber, null);
     }
 }
