@@ -2,6 +2,7 @@ package com.bi.dbpedia.dao;
 
 import com.bi.dbpedia.dto.OneNodeParam;
 import com.bi.dbpedia.dto.TwoNodeParam;
+import lombok.extern.slf4j.Slf4j;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
@@ -10,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Repository
 public class Neo4jRepository {
 
@@ -24,7 +27,7 @@ public class Neo4jRepository {
     }
 
     public List<Record> queryWithCyber(String cyber, Map<String, Object> params) {
-        Result result = null;
+        Result result;
         if (params != null) {
             result = neo4jTemplate.run(cyber, params);
         } else {
@@ -53,6 +56,7 @@ public class Neo4jRepository {
             return null;
         }
         cyber = String.format(cyber, direction, constrains.toString().replaceFirst("and", ""));
+        log.info(cyber);
         return queryWithCyber(cyber, null);
         // 无视大小写
 //        name = "(?i)" + name;
@@ -96,6 +100,7 @@ public class Neo4jRepository {
         }
         cyber = String.format(cyber, param.getMaxLinks(), lc.toString(),
                 direction, constrains.toString().replaceFirst("and", ""));
+        log.info(cyber);
         System.out.println(cyber);
 //        name1 = "(?i)" + name1;
 //        name2 = "(?i)" + name2;
@@ -119,5 +124,27 @@ public class Neo4jRepository {
                 "match (n)-[l:Relation]->(x:Resource) where l.name=~'(?i)product' " +
                 "return x.name as name, count(x) as value order by value desc limit 10 ";
         return queryWithCyber(cyber, null);
+    }
+
+    public List<Record> searchCompany() {
+        String cyber = "match (n:Resource)-[a]->(m:Resource) where m.name=~'(?i)internet' and a.name=~'(?)industry' " +
+                "match (n)-[l:Relation]->(x:Resource) where l.name=~'(?i)service' " +
+                "match (n)-[o:Relation]->(y:Resource) where o.name=~'(?i)product' " +
+                "return distinct(n.name) as name";
+        return queryWithCyber(cyber, null);
+    }
+
+    public List<Record> searchServiceByName(String companyName) {
+        String cyber = "match (n:Resource{name:$name})-[l:Relation{name:'service'}]->(m:Resource) return m.name as name";
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", companyName);
+        return queryWithCyber(cyber, params);
+    }
+
+    public List<Record> searchProductsByName(String companyName) {
+        String cyber = "match (n:Resource{name:$name})-[l:Relation{name:'product'}]->(m:Resource) return m.name as name";
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", companyName);
+        return queryWithCyber(cyber, params);
     }
 }

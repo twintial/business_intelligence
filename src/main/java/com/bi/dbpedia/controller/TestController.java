@@ -120,7 +120,7 @@ public class TestController {
             labels1.add(data.getSubjectLabel());
             labels1.add(data.getObjectLabel());
         }
-        //entityRepository.saveAll(entities);
+        entityRepository.saveAll(entities);
         dataTableMapper.insertResourceLabel(labels1);
 
 
@@ -131,7 +131,7 @@ public class TestController {
             predicateSet.add(new EsPredicate(predicate.getPredicate(), predicate.getPredicateUri(), predicate.getPredicateLabel()));
             labels2.add(predicate.getPredicateLabel());
         }
-        //predicateRepository.saveAll(predicateSet);
+        predicateRepository.saveAll(predicateSet);
         dataTableMapper.insertPredicateLabel(labels2);
     }
 
