@@ -7,6 +7,7 @@ import com.bi.dbpedia.dto.TwoNodeParam;
 import com.bi.dbpedia.model.GraphData;
 import com.bi.dbpedia.service.BasicQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,6 +23,7 @@ public class BasicQueryController {
         return CommonResult.success(graphData, "query one success");
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @PostMapping("/two")
     public CommonResult<GraphData> queryTwoEntityWithNLinks(@RequestBody TwoNodeParam twoNodeParam) {
         GraphData graphData = basicQueryService.queryTwoEntityWithNLinks(twoNodeParam);
