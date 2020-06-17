@@ -30,35 +30,34 @@ public class KafkaReceiver {
     @KafkaListener(topics = {"example"})
     public void listen(ConsumerRecord<String, String> record) {
         // System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());
-//        String value = record.value();
-//        Map result = JSONObject.parseObject(value, Map.class);
-//
-//        String type = result.get("type").toString();
-//        List<String> acceptTypes = new ArrayList<>(Arrays.asList("INSERT", "DELETE", "UPDATE"));
-//        if (!acceptTypes.contains(type)) {
-//            System.out.println(type);
-//            return;
-//        }
-//        // result.forEach((k, v) -> System.out.printf("k:%s,v:%s\n", k, v));
-//
-//        List newValues = (List) result.get("data");
-//        List oldValues = (List) result.get("old");
-//
-//        List<DataTable> newList = (List<DataTable>) newValues.stream()
-//                .map(v -> JSON.parseObject(v.toString(), DataTable.class)).collect(Collectors.toList());
-//
-//        // insert和delete的时候old为null
-//        List<Map<String, String>> oldList = null;
-//        if (oldValues != null) {
-//            oldList = (List<Map<String, String>>) oldValues.stream()
-//                    .map(v -> JSON.parseObject(v.toString(), Map.class)).collect(Collectors.toList());
-//        }
-//
-//        log.info(String.valueOf(newList));
-//        log.info(String.valueOf(oldList));
-//
-//
-//        opFactory.getOp(type).op(newList, oldList);
-        System.out.println("1");
+        String value = record.value();
+        Map result = JSONObject.parseObject(value, Map.class);
+
+        String type = result.get("type").toString();
+        List<String> acceptTypes = new ArrayList<>(Arrays.asList("INSERT", "DELETE", "UPDATE"));
+        if (!acceptTypes.contains(type)) {
+            System.out.println(type);
+            return;
+        }
+        // result.forEach((k, v) -> System.out.printf("k:%s,v:%s\n", k, v));
+
+        List newValues = (List) result.get("data");
+        List oldValues = (List) result.get("old");
+
+        List<DataTable> newList = (List<DataTable>) newValues.stream()
+                .map(v -> JSON.parseObject(v.toString(), DataTable.class)).collect(Collectors.toList());
+
+        // insert和delete的时候old为null
+        List<Map<String, String>> oldList = null;
+        if (oldValues != null) {
+            oldList = (List<Map<String, String>>) oldValues.stream()
+                    .map(v -> JSON.parseObject(v.toString(), Map.class)).collect(Collectors.toList());
+        }
+
+        log.info(String.valueOf(newList));
+        log.info(String.valueOf(oldList));
+
+
+        opFactory.getOp(type).op(newList, oldList);
     }
 }
