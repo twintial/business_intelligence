@@ -69,11 +69,11 @@ public class EsSync implements AbstractSync {
     @Override
     public void delete(List<DataTable> deleteList) {
         System.out.println("es delete");
-//        for (DataTable data : deleteList) {
-//            entityRepository.delete(new EsEntity(data.getObject(), data.getObjectUri(), data.getObjectLabel()));
-//            entityRepository.delete(new EsEntity(data.getSubject(), data.getSubjectUri(), data.getSubjectLabel()));
-//            predicateRepository.delete(new EsPredicate(data.getPredicate(), data.getPredicateUri(), data.getPredicateLabel()));
-//        }
+        for (DataTable data : deleteList) {
+            entityRepository.delete(new EsEntity(data.getObject(), data.getObjectUri(), data.getObjectLabel()));
+            entityRepository.delete(new EsEntity(data.getSubject(), data.getSubjectUri(), data.getSubjectLabel()));
+            predicateRepository.delete(new EsPredicate(data.getPredicate(), data.getPredicateUri(), data.getPredicateLabel()));
+        }
     }
 
     @Override
