@@ -18,7 +18,7 @@
         <java.version>1.8</java.version>
         <druid.version>1.1.10</druid.version>
         <canal.version>1.1.4</canal.version>
-        <fastjson.version>1.2.70</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <mybatis.version>2.1.1</mybatis.version>
         <jwt.version>0.9.0</jwt.version>
         <pagehelper-starter.version>1.2.3</pagehelper-starter.version>
